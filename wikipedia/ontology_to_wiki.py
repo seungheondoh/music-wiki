@@ -24,7 +24,7 @@ def recursive_music_entity(categorymembers, level=0, max_level=16):
 def get_entity(wiki_path):
     cat = wiki_wiki.page("Category:Music")
     recursive_music_entity(cat.categorymembers)
-    with open(os.path.join(wiki_path, f"entity.jsonl"), encoding= "utf-8",mode="w") as f: 
+    with open(os.path.join(wiki_path, f"wiki_ontolgy.jsonl"), encoding= "utf-8",mode="w") as f: 
         for i in MUSIC_ENTITY: f.write(json.dumps(i) + "\n")
 
 def get_wiki(instance):
