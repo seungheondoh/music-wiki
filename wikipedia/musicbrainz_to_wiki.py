@@ -37,7 +37,12 @@ def get_wiki(instance):
 
 def main(args):
     datas = data_loader(args.mb_path, args.entity)
-    save_path = os.path.join(args.wiki_path, f"{args.entity}_data.jsonl")
+    print(len(datas))
+    if args.entity == "recording":
+        save_path = os.path.join(args.wiki_path, f"{args.entity}_data{args.index}.jsonl")
+        datas = datas[args.n_sample * args.index : args.n_sample * (args.index + 1)]
+    else:
+        save_path = os.path.join(args.wiki_path, f"{args.entity}_data.jsonl")
     with ThreadPoolExecutor() as executor:
         futures = [
             executor.submit(get_wiki, instance)
@@ -53,7 +58,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='crawling entity_to_wiki')
     parser.add_argument('--mb_path', type=str, default="../datasets/musicbrainz")
     parser.add_argument('--wiki_path', type=str, default="../datasets/wikipedia")
-    parser.add_argument('--entity', type=str, default="genre")
+    parser.add_argument('--entity', type=str, default="recording")
+    parser.add_argument('--index', type=int, default=0)
+    parser.add_argument('--n_sample', type=int, default=10000000)
     # ['genre','instrument', 'artist', 'release', 'release_group', 'event', 'label', 'place', 'series', 'url', 'work', 'area', 'recording']
     args = parser.parse_args()
     main(args)
